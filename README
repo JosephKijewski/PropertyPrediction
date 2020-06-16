@@ -1,0 +1,39 @@
+OneTime is the folder that includes the datasets and the file that processes them into molecules+properties. The directory code contains all the code you will need to run.
+To create datasets:
+Go to the folder OneTime, run create_qm.py, this will create the molecule and property folders
+in code/data.
+
+Next, go to folder Code/DataProcessing, and run process_dataset. This file creates train-val-test splits and filters invalid molecules and saves it to a folder of your choice. This folder will then later be the folder where the random walks are stored. Use the following args:
+
+# argv[1]: path to data folder for the dataset you are using
+# argv[2]: Folder where you would like to save your files to, should be unique to dataset (this should probably be a subfolder of scratch)
+# argv[3]: Train percent as a float in [0, 1]
+# argv[4]: Val percent as a float in [0, 1]
+# argv[5]: Problem type: c, r depending on whether you want classification or regression
+# argv[6]: Dataset name (one of tox21, qm8, qm9)
+
+Next, run create_walks, which will produce walks from the splits created by process_dataset. Use the following args:
+
+# argv[1]: Directory where data is being handled (this is same as argv[2] from process_dataset)
+# argv[2]: Number of threads making copies
+# argv[3]: Number of copies you would like to have made per thread
+# argv[4]: Grid size of each walk
+
+You have now created the random walks!
+
+Go back to the directory Code. Now run regression with the following arguments in order to train. This will save a log file with the results:
+
+# argv[1]: Directory containing walks (argv[2] from process_dataset)
+# argv[2]: Grid size you would like to load walks from
+# argv[3]: Learning rate
+# argv[4]: Batch size
+# argv[5]: Number of walks to randomly select from
+# argv[6]: Model type, one of resnet18, resnet34, resnet50, densenet121, densenet161, densenet169, densenet201
+
+Classification is just a skeleton, I haven't gotten the chance to update/test it.
+
+Other files of interest:
+Code/models: includes the models
+Code/DataProcessing/rand_walk_code: includes code for the random walk
+
+
